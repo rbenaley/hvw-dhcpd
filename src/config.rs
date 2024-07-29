@@ -1,39 +1,21 @@
+use serde::{Deserialize, Serialize};
 use anyhow::Result;
-use serde::Deserialize;
 use std::fs;
 
-#[derive(Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Config {
-    pub subnet: Subnet,
-    pub router: Router,
-    pub dns: Dns,
-    pub lease: Lease,
+    pub dhcp: DhcpConfig,
 }
 
-#[derive(Deserialize, Debug)]
-pub struct Subnet {
-    pub start_ip: String,
-    pub end_ip: String,
-    pub mask: String,
+#[derive(Serialize, Deserialize, Debug)]
+pub struct DhcpConfig {
+    pub server_addr: String,
+    pub local_addr: String,
+    pub response_addr: String, // Add this field
 }
 
-#[derive(Deserialize, Debug)]
-pub struct Router {
-    pub ip: String,
-}
-
-#[derive(Deserialize, Debug)]
-pub struct Dns {
-    pub servers: Vec<String>,
-}
-
-#[derive(Deserialize, Debug)]
-pub struct Lease {
-    pub time: u64,
-}
-
-pub fn load_config(file: &str) -> Result<Config> {
-    let contents = fs::read_to_string(file)?;
-    let config: Config = toml::from_str(&contents)?;
+pub fn load_config(path: &str) -> Result<Config> {
+    let config_str = fs::read_to_string(path)?;
+    let config: Config = toml::from_str(&config_str)?;
     Ok(config)
 }

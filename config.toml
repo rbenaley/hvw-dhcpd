@@ -1,13 +1,4 @@
-[subnet]
-start_ip = "192.168.1.100"
-end_ip = "192.168.1.200"
-mask = "255.255.255.0"
-
-[router]
-ip = "192.168.1.1"
-
-[dns]
-servers = ["8.8.8.8"]
-
-[lease]
-time = 86400
+[dhcp]
+server_addr = "192.168.128.1:67"
+local_addr = "0.0.0.0:67"    # Listening for DHCP client requests
+response_addr = "0.0.0.0:68" # Listening for DHCP server responses
